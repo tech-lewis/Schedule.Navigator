@@ -77,7 +77,7 @@
 
   _tabsButton = [[UIButton alloc] init];
   
-  [_tabsButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+  [_tabsButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   // [_tabsButton setBackgroundColor:[UIColor grayColor]];
   _tabsButton.titleLabel.layer.borderColor = [UIColor blackColor].CGColor;
   _tabsButton.titleLabel.layer.cornerRadius = 4;
