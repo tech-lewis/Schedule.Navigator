@@ -42,50 +42,52 @@
   [self arrangeToolbarWithEditing:true];
 }
 - (void)viewDidInit {
-    self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
-    self.backButton = [[UIButton alloc] init];
-    [self.backButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.backButton setTitle:@"<" forState:UIControlStateNormal];
-    [self.backButton addTarget:self action:@selector(didClickBack) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.backButton];
+  self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+  self.backButton = [[UIButton alloc] init];
+  [self.backButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+  [self.backButton setTitle:@"<" forState:UIControlStateNormal];
+  [self.backButton addTarget:self action:@selector(didClickBack) forControlEvents:UIControlEventTouchUpInside];
+  [self addSubview:self.backButton];
 
-    self.forwardButton = [[UIButton alloc] init];
-    [self.forwardButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.forwardButton setTitle:@">" forState:UIControlStateNormal];
-    [self.forwardButton addTarget:self action:@selector(didClickForward) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.forwardButton];
+  self.forwardButton = [[UIButton alloc] init];
+  [self.forwardButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+  [self.forwardButton setTitle:@">" forState:UIControlStateNormal];
+  [self.forwardButton addTarget:self action:@selector(didClickForward) forControlEvents:UIControlEventTouchUpInside];
+  [self addSubview:self.forwardButton];
 
-    self.toolbarTextField = [[ToolbarTextField alloc] init];
-    self.toolbarTextField.keyboardType = UIKeyboardTypeURL;
-    self.toolbarTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.toolbarTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.toolbarTextField.returnKeyType = UIReturnKeyGo;
-    self.toolbarTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    self.toolbarTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
-    self.toolbarTextField.layer.cornerRadius = 8;
-    [self.toolbarTextField setContentHuggingPriority:0 forAxis:UILayoutConstraintAxisHorizontal];
-    self.toolbarTextField.delegate = self;
-    self.toolbarTextField.placeholder = @"Please enter site address";
-    [self addSubview:self.toolbarTextField];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditing) name:UITextFieldTextDidBeginEditingNotification object:self.toolbarTextField];
+  self.toolbarTextField = [[ToolbarTextField alloc] init];
+  self.toolbarTextField.keyboardType = UIKeyboardTypeURL;
+  self.toolbarTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+  self.toolbarTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+  self.toolbarTextField.returnKeyType = UIReturnKeyGo;
+  self.toolbarTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+  self.toolbarTextField.layer.backgroundColor = [UIColor whiteColor].CGColor;
+  self.toolbarTextField.layer.cornerRadius = 8;
+  [self.toolbarTextField setContentHuggingPriority:0 forAxis:UILayoutConstraintAxisHorizontal];
+  self.toolbarTextField.delegate = self;
+  self.toolbarTextField.placeholder = @"Please enter site address";
+  [self addSubview:self.toolbarTextField];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditing) name:UITextFieldTextDidBeginEditingNotification object:self.toolbarTextField];
 
-    self.cancelButton = [[UIButton alloc] init];
-    [self.cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [self.cancelButton addTarget:self action:@selector(didClickCancel) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.cancelButton];
+  self.cancelButton = [[UIButton alloc] init];
+  [self.cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+  [self.cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+  [self.cancelButton addTarget:self action:@selector(didClickCancel) forControlEvents:UIControlEventTouchUpInside];
+  [self addSubview:self.cancelButton];
 
-    _tabsButton = [[UIButton alloc] init];
-    [_tabsButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    _tabsButton.titleLabel.layer.borderColor = [UIColor blackColor].CGColor;
-    _tabsButton.titleLabel.layer.cornerRadius = 4;
-    _tabsButton.titleLabel.layer.borderWidth = 1;
-    _tabsButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:12];
-    _tabsButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [_tabsButton.titleLabel sizeToFit];
-    [_tabsButton addTarget:self action:@selector(didClickAddTab) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_tabsButton];
-    [self arrangeToolbarWithEditing:NO];
+  _tabsButton = [[UIButton alloc] init];
+  
+  [_tabsButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+  // [_tabsButton setBackgroundColor:[UIColor grayColor]];
+  _tabsButton.titleLabel.layer.borderColor = [UIColor blackColor].CGColor;
+  _tabsButton.titleLabel.layer.cornerRadius = 4;
+  _tabsButton.titleLabel.layer.borderWidth = 1;
+  _tabsButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:10];
+  _tabsButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+  [_tabsButton.titleLabel sizeToFit];
+  [_tabsButton addTarget:self action:@selector(didClickAddTab) forControlEvents:UIControlEventTouchUpInside];
+  [self addSubview:_tabsButton];
+  [self arrangeToolbarWithEditing:NO];
 }
 
 - (void)arrangeToolbarWithEditing:(BOOL)editing {
@@ -196,7 +198,11 @@
 #pragma - mark Action
 - (void)updateTabCount:(NSInteger)count
 {
-  [_tabsButton setTitle:[NSString stringWithFormat:@" %ld  ", count] forState:UIControlStateNormal];
+  count > 1 ?
+    count >= 10 ?
+    [_tabsButton setTitle:[NSString stringWithFormat:@" %ld\t", count] forState:UIControlStateNormal]:
+    [_tabsButton setTitle:[NSString stringWithFormat:@"%ldtabs", count] forState:UIControlStateNormal]:
+  [_tabsButton setTitle:[NSString stringWithFormat:@"%ldtab ", count] forState:UIControlStateNormal];
 }
 
 - (void)updateUrlAddress:(NSString *)address

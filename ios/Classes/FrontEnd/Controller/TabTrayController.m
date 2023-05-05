@@ -31,17 +31,18 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+  [super viewDidLoad];
+  // 设置工具栏到顶部
+  self.toolbar = [[UIToolbar alloc] init];
+  [self.view addSubview:self.toolbar];
 
-    self.toolbar = [[UIToolbar alloc] init];
-    [self.view addSubview:self.toolbar];
+  UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(didClickDone)];
+  UIBarButtonItem *addTabItem = [[UIBarButtonItem alloc] initWithTitle:@"Add tab" style:UIBarButtonItemStylePlain target:self action:@selector(didClickAddTab)];
+  UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+  self.toolbar.items = @[doneItem, spacer, addTabItem];
 
-    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(didClickDone)];
-    UIBarButtonItem *addTabItem = [[UIBarButtonItem alloc] initWithTitle:@"Add tab" style:UIBarButtonItemStylePlain target:self action:@selector(didClickAddTab)];
-    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    self.toolbar.items = @[doneItem, spacer, addTabItem];
-
-    self.tabTableView = [[UITableView alloc] init];
+  self.tabTableView = [[UITableView alloc] init];
+  [self.tabTableView setEditing:true];
     if (self.tabManager && self.tabManager.tabs) {
         NSArray *tabs = self.tabManager.tabs;
         self.tabDataSource = [[TabTableDataSource alloc] initWithTabs:[tabs mutableCopy] selectedTab:[self.tabManager selectedTab] removeCallback:^(Browser *tab) {
@@ -52,8 +53,8 @@
             [self.tabManager selectTab:tab];
             [self dismissViewControllerAnimated:YES completion:nil];
         }];
-//        self.tabTableView.dataSource = self.tabDataSource;
-//        self.tabTableView.delegate = self.tabDelegate;
+        self.tabTableView.dataSource = self;
+        self.tabTableView.delegate = self;
     }
     [self.view addSubview:self.tabTableView];
 
