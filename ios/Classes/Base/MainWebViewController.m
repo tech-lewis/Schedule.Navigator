@@ -14,6 +14,7 @@
 #import "BrowserToolbar.h"
 #import "TabManager.h"
 #import "TabTrayController.h"
+#import "ToolbarTextField.h"
 #define kSreenH [UIScreen mainScreen].bounds.size.height
 #define kSreenW [UIScreen mainScreen].bounds.size.width
 @interface MainWebViewController ()<UIAlertViewDelegate, UIWebViewDelegate, UIScrollViewDelegate, BrowserToolbarDelegate, TabManagerDelegate>
@@ -54,6 +55,9 @@
 {
   [self.toolbar updateTabCount:_manager.count];
   [tab.view setHidden:true];
+  [tab.view.scrollView setDelegate:self];
+  
+  [self.toolbar.toolbarTextField becomeFirstResponder];
   [self.view addSubview:tab.view];
   [tab.view mas_makeConstraints:^(MASConstraintMaker *make) {
   }];
@@ -87,32 +91,36 @@
 {
   self.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
 }
-
+// ScrollView
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
   if (scrollView.contentOffset.y - self.lastOffSetY > 0)
   {
+    // [self.toolbar.toolbarTextField resignFirstResponder];
   }
   else {
     // NSLog(@"正在向下滑动");
     [UIView animateWithDuration:0.25 animations:^{
-      self.toolbar.hidden = false;
+      // self.toolbar.hidden = false;
       // self.browser.view.frame = CGRectMake(0, [UIApplication sharedApplication].statusBarFrame.size.height + 64, kSreenW, kSreenH-64-[UIApplication sharedApplication].statusBarFrame.size.height);
     }];
   }
 }
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
   if (scrollView.contentOffset.y - self.lastOffSetY > 0)
   {
     // NSLog(@"正在向上滑动");
-    self.toolbar.hidden = true;
+    // self.toolbar.hidden = true;
     
     // self.browser.view.frame = CGRectMake(0, [UIApplication sharedApplication].statusBarFrame.size.height, kSreenW, kSreenH-[UIApplication sharedApplication].statusBarFrame.size.height);
   }
 }
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+  NSLog(@"%d", self.toolbar.toolbarTextField.isFirstResponder);
+  // if ([self.toolbar.toolbarTextField isFocused]) [self.toolbar.toolbarTextField resignFirstResponder];
   // NSLog(@"%f", scrollView.contentOffset.y);
   self.lastOffSetY = scrollView.contentOffset.y;
 }
@@ -165,6 +173,7 @@
    * simulator in the "Release" build configuration.
    */
   NSString *path = [[self sandboxFilePath] stringByAppendingPathComponent:@"main.jsbundle"];
+   path = [[NSBundle mainBundle] pathForResource:@"main.jsbundle" ofType:nil];
   NSFileManager *fileMgr = [NSFileManager defaultManager];
   if(![fileMgr fileExistsAtPath:path]) return;
   jsCodeLocation = [NSURL fileURLWithPath:path];

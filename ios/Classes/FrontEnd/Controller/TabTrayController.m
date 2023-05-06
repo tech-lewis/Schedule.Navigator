@@ -42,7 +42,7 @@
   self.toolbar.items = @[doneItem, spacer, addTabItem];
 
   self.tabTableView = [[UITableView alloc] init];
-  [self.tabTableView setEditing:true];
+  [self.tabTableView setEditing:false];
     if (self.tabManager && self.tabManager.tabs) {
         NSArray *tabs = self.tabManager.tabs;
         self.tabDataSource = [[TabTableDataSource alloc] initWithTabs:[tabs mutableCopy] selectedTab:[self.tabManager selectedTab] removeCallback:^(Browser *tab) {

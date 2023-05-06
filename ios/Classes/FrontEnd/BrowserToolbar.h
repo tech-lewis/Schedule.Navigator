@@ -15,8 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didEnterURL:(NSURL *)url;
 - (void)didClickAddTab;
 @end
-
+@class ToolbarTextField;
 @interface BrowserToolbar : UIView
+@property (nonatomic, strong) ToolbarTextField *toolbarTextField;
 @property (nonatomic, weak) id<BrowserToolbarDelegate> browserToolbarDelegate;
 - (instancetype)initWithFrame:(CGRect)frame;
 - (void)updateTabCount:(NSInteger)count;

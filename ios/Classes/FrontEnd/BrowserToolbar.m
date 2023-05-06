@@ -12,7 +12,6 @@
 @interface BrowserToolbar ()<UITextFieldDelegate>
 @property (nonatomic, strong) UIButton *forwardButton;
 @property (nonatomic, strong) UIButton *backButton;
-@property (nonatomic, strong) ToolbarTextField *toolbarTextField;
 @property (nonatomic, strong) UIButton *cancelButton;
 @property (nonatomic, strong) UIButton *tabsButton;
 @end
